@@ -1,19 +1,14 @@
 #include <stdio.h>
-
 #include "lib/Snake.h"
 
-
-
-
-
-
-
-
+/*
+ * ############ Snake ############ 
+ * Created by Marcin Kierinkiewicz 
+ */
 
 int main(void)
 {
     srand(time(NULL));
-
     static int flag;
     before = clock();
 
