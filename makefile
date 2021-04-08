@@ -18,6 +18,7 @@ $(OBJECTS):
 
 
 clean: 
+	make clean -C lib
 	rm -f $(OBJECTS)
 	rm -f $(NAME)
 	
