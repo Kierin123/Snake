@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "lib/Snake.h"
+#include "snake/Snake.h"
 
 /*
  * ############ Snake ############ 
@@ -8,17 +8,17 @@
 
 int main(void)
 {
-    srand(time(NULL));
+   
     static int flag;
-    before = clock();
-
-    Setup();
-    while (!gameover)
+    snake S1;
+    
+    Setup(&S1);
+    while (!check_game())
     {
 
-        Draw();
+        Draw(S1);
         flag = input();
-        logic(flag);
+        logic(flag, &S1);
     }
     system("clear");
     return 0;
