@@ -50,8 +50,8 @@ void Draw(snake SN)
             }
             else
             {
-                //for (int k = 0; k < SN.length; k++)
-                //  {
+                //for (int k = 0; k <= SN.length; k++)
+                //{
                 if (i == SN.snake_tail[0].x && j == SN.snake_tail[0].y)
                 {
                     printf("@");
@@ -64,19 +64,22 @@ void Draw(snake SN)
                 {
                     printf(" ");
                 }
-                //  }
             }
         }
         printf("\n");
     }
     printf("Wynik: %d\n", score);
+    for (int i = 0; i < SN.length; i++)
+    {
+        printf("%d. x: %d  y: %d\n", i, SN.snake_tail[i].x, SN.snake_tail[i].y);
+    }
 }
 
 void Setup(snake *SN)
 {
     srand(time(NULL));
     gameover = 0;
-    SN->length = 1;
+    SN->length = 0;
     SN->snake_tail[0].x = MAP_HIGH / 2;
     SN->snake_tail[0].y = MAP_WIDTH / 2;
 
@@ -125,18 +128,18 @@ int input()
 
 void tail_create(snake *SN)
 {
+    int ptr = SN->length;
     point temp_point;
-    for (int i = 0; i < SN->length - 1; i++)
+    for (int i = ptr; i > 1; i--)
     {
-        SN->snake_tail[i + 1].x = SN->snake_tail[i].x;
-        SN->snake_tail[i + 1].y = SN->snake_tail[i].y;
+
+        SN->snake_tail[i] = SN->snake_tail[i - 1];
     }
 }
 
 void logic(int ctr_flag, snake *SN)
 {
 
-    //  tail_create(SN);
     now = clock();
     clock_t t = now - before;
     if (t > speed_time)
@@ -144,16 +147,73 @@ void logic(int ctr_flag, snake *SN)
         switch (ctr_flag)
         {
         case 1:
+            if (SN->length > 0)
+            {
+                SN->snake_tail[1].x = SN->snake_tail[0].x;
+                SN->snake_tail[1].y = SN->snake_tail[0].y + 1;
+            }
+
+            if (SN->length >= 2)
+            {
+                for (int i = SN->length; i > 1; i--)
+                {
+                    SN->snake_tail[i + 1].x = SN->snake_tail[i].x;
+                    SN->snake_tail[i + 1].y = SN->snake_tail[i].y;
+                }
+            }
             SN->snake_tail[0].y--;
+
             break;
         case 2:
+            if (SN->length > 0)
+            {
+                SN->snake_tail[1].x = SN->snake_tail[0].x;
+                SN->snake_tail[1].y = SN->snake_tail[0].y - 1;
+            }
+            if (SN->length >= 2)
+            {
+                for (int i = SN->length; i > 1; i--)
+                {
+                    SN->snake_tail[i + 1].x = SN->snake_tail[i].x;
+                    SN->snake_tail[i + 1].y = SN->snake_tail[i].y;
+                }
+            }
             SN->snake_tail[0].y++;
+
             break;
         case 3:
+            if (SN->length > 0)
+            {
+                SN->snake_tail[1].x = SN->snake_tail[0].x + 1;
+                SN->snake_tail[1].y = SN->snake_tail[0].y;
+            }
+            if (SN->length >= 2)
+            {
+                for (int i = SN->length; i > 1; i--)
+                {
+                    SN->snake_tail[i + 1].x = SN->snake_tail[i].x;
+                    SN->snake_tail[i + 1].y = SN->snake_tail[i].y;
+                }
+            }
             SN->snake_tail[0].x--;
+
             break;
         case 4:
+            if (SN->length > 0)
+            {
+                SN->snake_tail[1].x = SN->snake_tail[0].x - 1;
+                SN->snake_tail[1].y = SN->snake_tail[0].y;
+            }
+            if (SN->length >= 2)
+            {
+                for (int i = SN->length; i > 1; i--)
+                {
+                    SN->snake_tail[i + 1].x = SN->snake_tail[i].x;
+                    SN->snake_tail[i + 1].y = SN->snake_tail[i].y;
+                }
+            }
             SN->snake_tail[0].x++;
+
             break;
 
         default:
@@ -161,10 +221,14 @@ void logic(int ctr_flag, snake *SN)
         }
         before = now;
     }
+
+    //tail_create(SN);
+
     if (SN->snake_tail[0].x <= 0 || SN->snake_tail[0].y <= 0 || SN->snake_tail[0].y >= MAP_WIDTH || SN->snake_tail[0].x >= MAP_HIGH)
     {
         gameover = 1;
     }
+
     if (SN->snake_tail[0].x == fruitx && SN->snake_tail[0].y == fruity)
     {
         SN->length++;
